@@ -2976,7 +2976,7 @@ const github = __webpack_require__(148);
 const core = __webpack_require__(827);
 
 try {
-    console.log(github.ccontext.payload);
+    console.log(github.context.payload);
 } catch (e) {
     core.setFailed(e.message);
 }
