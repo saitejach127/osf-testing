@@ -1,0 +1,5 @@
+name: 'Leaderboard Points'
+description: 'To assign points to users based on pull requests'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
