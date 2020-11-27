@@ -27,7 +27,7 @@ try {
                 repoName : repoName,
                 points : points
             }).then((resp) => {
-                console.log(resp.data);
+                console.log("Congrats you have been awarded ", points, " points");
             })
         })
     })
