@@ -4095,15 +4095,15 @@ const axios = __webpack_require__(802);
 try {
     var repoName = github.context.payload.repository.full_name;
     var fullMessage = github.context.payload.head_commit.message;
-    var issuneNumber = fullMessage.split("\n\n")[1];
-    issuneNumber = issuneNumber.trim();
-    issuneNumber = issuneNumber.substring(1,issuneNumber.length);
+    var issueNumber = fullMessage.split("\n\n")[1];
+    issueNumber = issueNumber.trim();
+    issueNumber = issueNumber.substring(1,issueNumber.length);
     issueNumber = parseInt(issueNumber);
     axios.default.get(`https://api.github.com/repos/${repoName}/pulls/${pullNumber}`).then((resp) => {
         var userPushed = resp.data.head.user.login;
         axios.default.post("https://leaderboardserver.herokuapp.com/getissue", {
             "repoName" : repoName,
-            issueNumber : issuneNumber
+            issueNumber : issueNumber
         }).then((resp) => {
             var points = resp.data.points;
             axios.default.post("https://leaderboardserver.herokuapp.com/score", {
