@@ -4111,9 +4111,23 @@ try {
     issuneNumber = issuneNumber.substring(1,issuneNumber.length);
     console.log("issue number", parseInt(issuneNumber), "\n");
     axios.default.get(`https://api.github.com/repos/${repoName}/pulls/${pullNumber}`).then((resp) => {
-        console.log(resp);
-        console.log("user who pushed", resp.head.user.login, "\n");
+        console.log("user who pushed", resp.data.head.user.login, "\n");
+        var userPushed = resp.data.head.user.login;
+        var points = axios.default.post("https://leaderboardserver.herokuapp.com/getissue", {
+            "repoName" : repoName,
+            issueNumber : issuneNumber
+        }).then((resp) => {
+            var points = resp.points;
+            axios.default.post("https://leaderboardserver.herokuapp.com/score", {
+                username : userPushed,
+                repoName : repoName,
+                points : points
+            }).then((resp) => {
+                console.log(resp);
+            })
+        })
     })
+
 } catch (e) {
     core.setFailed(e.message);
 }
