@@ -4093,27 +4093,29 @@ const core = __webpack_require__(827);
 const axios = __webpack_require__(802);
 
 try {
-    console.log(github.context.payload);
-    console.log("\n");
-    console.log(github.context.payload.head_commit.message);
     var repoName = github.context.payload.repository.full_name;
     var fullMessage = github.context.payload.head_commit.message;
-    var pullNumber = "";
-    var i = 20;
-    while(fullMessage[i]!== " "){
-        pullNumber += fullMessage[i];
-        i++;
-    }
-    console.log("repo name",repoName, "\n");
-    console.log("pull number", parseInt(pullNumber), "\n");
     var issuneNumber = fullMessage.split("\n\n")[1];
     issuneNumber = issuneNumber.trim();
     issuneNumber = issuneNumber.substring(1,issuneNumber.length);
-    console.log("issue number", parseInt(issuneNumber), "\n");
+    issueNumber = parseInt(issueNumber);
     axios.default.get(`https://api.github.com/repos/${repoName}/pulls/${pullNumber}`).then((resp) => {
-        console.log(resp);
-        console.log("user who pushed", resp.head.user.login, "\n");
+        var userPushed = resp.data.head.user.login;
+        axios.default.post("https://leaderboardserver.herokuapp.com/getissue", {
+            "repoName" : repoName,
+            issueNumber : issuneNumber
+        }).then((resp) => {
+            var points = resp.data.points;
+            axios.default.post("https://leaderboardserver.herokuapp.com/score", {
+                username : userPushed,
+                repoName : repoName,
+                points : points
+            }).then((resp) => {
+                console.log(resp.data);
+            })
+        })
     })
+
 } catch (e) {
     core.setFailed(e.message);
 }
