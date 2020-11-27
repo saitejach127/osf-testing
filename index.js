@@ -3,8 +3,8 @@ const core = require("@actions/core");
 
 try {
     console.log(github.context.payload);
-    console.log("\n\n\n");
-    console.log(process.env.GITHUB_REF);
+    console.log("\n");
+    console.log(github.context.payload.head_commit.message);
 } catch (e) {
     core.setFailed(e.message);
 }
