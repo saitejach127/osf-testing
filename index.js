@@ -5,6 +5,12 @@ const axios = require("axios");
 try {
     var repoName = github.context.payload.repository.full_name;
     var fullMessage = github.context.payload.head_commit.message;
+    var pullNumber = "";
+    var i = 20;
+    while(fullMessage[i]!== " "){
+        pullNumber += fullMessage[i];
+        i++;
+    }
     var issueNumber = fullMessage.split("\n\n")[1];
     issueNumber = issueNumber.trim();
     issueNumber = issueNumber.substring(1,issueNumber.length);
