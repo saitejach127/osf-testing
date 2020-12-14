@@ -4105,20 +4105,34 @@ try {
     issueNumber = issueNumber.trim();
     issueNumber = issueNumber.substring(1,issueNumber.length);
     issueNumber = parseInt(issueNumber);
+    console.log("starting");
+    console.log("Details: \n");
+    console.log(repoName, "\n");
+    console.log(pullNumber, "\n");
+    console.log(issueNumber, "\n");
     axios.default.get(`https://api.github.com/repos/${repoName}/pulls/${pullNumber}`).then((resp) => {
         var userPushed = resp.data.head.user.login;
+        console.log(userPushed, " created the pull request");
         axios.default.post("https://leaderboardserver.herokuapp.com/getissue", {
             "repoName" : repoName,
             issueNumber : issueNumber
         }).then((resp) => {
             var points = resp.data.points;
+            console.log("points for this repo", points);
             axios.default.post("https://leaderboardserver.herokuapp.com/score", {
                 username : userPushed,
                 repoName : repoName,
                 points : points
             }).then((resp) => {
                 console.log("Congrats you have been awarded ", points, " points");
+                console.log(resp);
+            }).catch((err) => {
+                console.log("error in posting to server points");
+                console.error(err);
             })
+        }).catch((err) => {
+            console.log("Error at requesting for points");
+            console.error(err);
         })
     })
 

@@ -15,6 +15,7 @@ try {
     issueNumber = issueNumber.trim();
     issueNumber = issueNumber.substring(1,issueNumber.length);
     issueNumber = parseInt(issueNumber);
+    console.log("starting");
     console.log("Details: \n");
     console.log(repoName, "\n");
     console.log(pullNumber, "\n");
